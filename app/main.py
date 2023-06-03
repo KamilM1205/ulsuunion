@@ -57,6 +57,7 @@ async def edit_user(user: schemas.UserUpdate, db: Session = Depends(get_db)):
 async def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     users = crud.get_users(db, skip=skip, limit=limit)
     return users
+
 app.include_router(article.router)
 app.include_router(login.router)
 app.include_router(registration.router)
