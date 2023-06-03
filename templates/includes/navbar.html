@@ -1,10 +1,18 @@
 <nav>
     <ul>
-        <li><h3>ULSU.Union</h3></li>
+        <li><h2>ULSU.Union</h2></li>
     </ul>
     <ul>
         <li><a href="/">Домой</a></li>
         <li><a href="/account">Аккаунт</a></li>
         <li><a href="/about">О проекте</a></li>
+        {% if not logged %}
+        (
+            <ul id="nav_loggin">
+                <li><a href="/registration">Регистрация</a></li>
+                <li><a href="/login">Войти</a></li>
+            </ul>
+        )
+        {% endif %}
     </ul>
 </nav>

@@ -1,0 +1,10 @@
+#nav_loggin li:last-child {
+    padding-left: 0;
+}
+
+#nav_loggin li:after {
+    content: "/";
+}
+#nav_loggin li:last-child:after {
+    content: "";
+}
