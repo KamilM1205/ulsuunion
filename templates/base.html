@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+
+<head>
+    {% block head %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="icon" href="{{ url_for('static', path='/images/favicon.png') }}" sizes="130x130" />
+    
+    <link rel="stylesheet" href="{{ url_for('static', path='/styles/pico-1.5.9/css/pico.min.css') }}" />
+
+    {% endblock %}
+</head>
+
+<body>
+    <main class="container">
+        {% block page_content %}
+        {% endblock %}
+    </main>
+    {% block scripts %}
+    <script src="{{ url_for('static', path='/js/jquery-3.7.0.js') }}"></script>
+    {% endblock %}
+</body>
