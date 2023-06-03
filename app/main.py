@@ -11,9 +11,12 @@ from .database import engine
 from .dependencies import get_db
 
 models.Base.metadata.create_all(bind=engine)
+from app.utils.article_generator import get_list
+
+from app.routers import article
+
 
 app = FastAPI()
-
 
 templates = Jinja2Templates(directory="templates")
 
@@ -54,3 +57,9 @@ async def edit_user(user: schemas.UserUpdate, db: Session = Depends(get_db)):
 async def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     users = crud.get_users(db, skip=skip, limit=limit)
     return users
+app.include_router(article.router)
+
+@app.get("/", response_class=HTMLResponse)
+async def root(request: Request):
+    articles = get_list()
+    return templates.TemplateResponse("index.html", {"request": request, "articles": articles})

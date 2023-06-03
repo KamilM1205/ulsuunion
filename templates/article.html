@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block head %}
+{{ super() }}
+{% endblock %}
+
+{% block page_content %}
+{% include 'includes/navbar.html' %}
+
+<h2>{title}</h2>
+
+{content}
+
+<footer>
+    Автор: {author} Почта: {email} Телефон: {phone}
+</footer>
+
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+{% endblock %}
