@@ -1,4 +1,8 @@
-from fastapi import FastAPI, Request, HTTPException, Depends
+from typing import Annotated
+
+from app.routers import article, login, registration
+from app.utils.article_generator import get_list
+from fastapi import FastAPI, Request, HTTPException, Depends, Form
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
@@ -11,9 +15,6 @@ from .database import engine
 from .dependencies import get_db
 
 models.Base.metadata.create_all(bind=engine)
-from app.utils.article_generator import get_list
-
-from app.routers import article, login, registration
 
 
 app = FastAPI()
@@ -61,6 +62,7 @@ async def edit_user(user: schemas.UserUpdate, db: Session = Depends(get_db)):
 async def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     users = crud.get_users(db, skip=skip, limit=limit)
     return users
+
 
 @app.get("/", response_class=HTMLResponse)
 async def root(request: Request, db: Session = Depends(get_db)):
