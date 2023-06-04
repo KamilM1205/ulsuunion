@@ -1,6 +1,7 @@
 from typing import Annotated
 
 from app.routers import article, user, token_endpoint
+from app.routers import about, article, account
 from app.utils.article_generator import get_list
 from fastapi import FastAPI, Request, HTTPException, Depends, Form
 from fastapi.responses import HTMLResponse
@@ -26,3 +27,5 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 app.include_router(article.router)
 app.include_router(token_endpoint.router)
 app.include_router(user.router)
+app.include_router(account.router)
+app.include_router(about.router)

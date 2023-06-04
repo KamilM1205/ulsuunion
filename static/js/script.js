@@ -1,3 +1,5 @@
+// modal -------------------------
+
 const isOpenClass = "modal-is-open";
 const openingClass = "modal-is-opening";
 const closingClass = "modal-is-closing";
@@ -71,3 +73,42 @@ function getScrollbarWidth() {
 function isScrollbarVisible() {
     return document.body.scrollHeight > screen.height;
 }
+
+// -----------------------
+
+// Sidenav ---------------
+
+var isSidenavOpen = false;
+
+function hideSidenav() {
+    $(".shadower").css("display", "none");
+    $(".sidenav").css("display", "none");
+    document.documentElement.style.removeProperty("--scrollbar-width", `${getScrollbarWidth()}px`);
+    isSidenavOpen = false;
+}
+
+function showSidenav() {
+    $(".shadower").css("display", "block");
+    $(".sidenav").css("display", "block");
+    document.documentElement.style.setProperty("--scrollbar-width", `${getScrollbarWidth()}px`);
+    isSidenavOpen = true;
+}
+
+$(".shadower").on("click", function(event) {
+    event.preventDefault();
+    hideSidenav();
+});
+
+$(".shadower").on("scroll", function(event) {
+    event.preventDefault();
+});
+
+$("#sidenav-btn").on("click", function() {
+    if (!isSidenavOpen) {
+        showSidenav();
+    } else {
+        hideSidenav();
+    }
+});
+
+// -------------

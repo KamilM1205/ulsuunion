@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}
+Редактор объявления
+{% endblock %}
+
+{% block head %}
+{{ super() }}
+{% endblock %}
+
+{% block header %}
+{% include 'includes/navbar.html' %}
+{% endblock %}
+
+{% block page_content %}
+{% include 'includes/sidenav.html' %}
+
+{% include 'login.html' %}
+{% include 'registration.html' %}
+
+<article>
+    <header>
+        <input type="text" id="title" name="title" placeholder="Заголовок" required>
+        <h5>Автор: {{author}}</h5>
+    </header>
+    Описание:
+    <textarea id="description" name="description" placeholder="Короткое описание статьи"></textarea>
+    Текст статьи:
+    <textarea id="content" name="content" placeholder="Текст статьи"></textarea>
+    <footer>
+        <a href="#confirm" role="button">Опубликовать</a>
+    </footer>
+</article>
+
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+{% endblock %}

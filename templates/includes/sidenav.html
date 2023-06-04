@@ -1,0 +1,17 @@
+<div class="sidenav">
+    <ul>
+        <li>
+            <h2>ULSU.Union</h2>
+        </li>
+    </ul>
+    <ul>
+        <li><a href="/">Домой</a></li>
+        <li><a href="/account">Аккаунт</a></li>
+        <li><a href="/about">О проекте</a></li>
+        {% if not logged %}
+        <li><a data-target="registration-modal" onclick="toggleModal(event)">Регистрация</a>
+            (<a data-target="login-modal" onclick="toggleModal(event)">Вход</a>)</li>
+        {% endif %}
+</div>
+
+<div class="shadower"></div>
