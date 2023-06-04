@@ -1,17 +1,20 @@
-{% extends "base.html" %}
+<dialog id="login-modal">
+    <article>
+        <header>
+            <a href="#close" aria-label="Close" class="close" data-target="login-modal" onClick="toggleModal(event)">
+            </a>
+            <h1>Вход</h1>
+        </header>
+        <input type="text" id="login" name="login" placeholder="Логин" required>
 
-{% block title %}
-Вход
-{% endblock %}
-
-{% block head %}
-{{ super() }}
-{% endblock %}
-
-{% block page_content %}
-
-{% endblock %}
-
-{% block scripts %}
-{{ super() }}
-{% endblock %}
+        <input type="password" id="password" name="password" placeholder="Пароль" require>
+        <footer>
+            <a href="#cancel" role="button" class="secondary" data-target="login-modal" onClick="toggleModal(event)">
+                Отмена
+            </a>
+            <a href="#confirm" role="button" data-target="login-modal" onClick="toggleModal(event)">
+                Войти
+            </a>
+        </footer>
+    </article>
+</dialog>

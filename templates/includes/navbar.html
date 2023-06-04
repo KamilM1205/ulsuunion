@@ -9,8 +9,8 @@
         {% if not logged %}
         (
             <ul id="nav_loggin">
-                <li><a href="/registration">Регистрация</a></li>
-                <li><a href="/login">Войти</a></li>
+                <li><a data-target="registration-modal" onclick="toggleModal(event)">Регистрация</a></li>
+                <li><a data-target="login-modal" onclick="toggleModal(event)">Вход</a></li>
             </ul>
         )
         {% endif %}

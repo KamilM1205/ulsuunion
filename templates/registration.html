@@ -1,0 +1,24 @@
+<dialog id="registration-modal">
+    <article>
+        <header>
+            <a href="#close" aria-label="Close" class="close" data-target="registration-modal" onClick="toggleModal(event)">
+            </a>
+            <h1>Регистрация</h1>
+        </header>
+
+        <input type="text" id="name" name="name" placeholder="Имя" required>
+        <input type="text" id="surname" name="surname" placeholder="Фамилия" required>
+        <input type="date" id="birtday" name="birthday">
+        <input type="email" id="email" name="email" placeholder="Почта" required>
+        <input type="password" id="password" name="password" placeholder="Пароль" require>
+
+        <footer>
+            <a href="#cancel" role="button" class="secondary" data-target="registration-modal" onClick="toggleModal(event)">
+                Отмена
+            </a>
+            <a href="#confirm" role="button" data-target="registration-modal" onClick="toggleModal(event)">
+                Зарегистрироваться
+            </a>
+        </footer>
+    </article>
+</dialog>
