@@ -3,8 +3,7 @@ from __future__ import annotations
 from sqlalchemy.orm import Session
 from sqlalchemy import update
 
-from . import models, schemas
-
+from . import models, schemas, dependencies
 
 ############
 # Users CRUD
@@ -28,9 +27,9 @@ def get_users(db: Session, skip: int = 0, limit: int = 100):
 
 
 def create_user(db: Session, user: schemas.UserCreate):
-    fake_hashed_pword = user.password + "_not_really_hashed"
+    hashed_pwd = dependencies.get_password_hash(user.password)
     db_user = models.User(
-        **user.dict(exclude={"password"}), hashed_password=fake_hashed_pword)
+        **user.dict(exclude={"password"}), hashed_password=hashed_pwd)
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
@@ -44,9 +43,9 @@ def delete_user(db: Session, user: models.User):
 
 
 def update_user(db: Session, user_new_data: schemas.UserUpdate, user_id):
-    hashed_password = user_new_data.password + "_not_really_hashed"
+    hashed_pwd = dependencies.get_password_hash(user_new_data.password)
     user = user_new_data.dict(exclude={"password"})
-    user["hashed_password"] = hashed_password
+    user["hashed_password"] = hashed_pwd
     user["id"] = user_id
     db.execute(update(models.User), [user])
     db.commit()
@@ -84,3 +83,7 @@ def delete_article(db: Session, article: models.Article):
     db.delete(article)
     db.commit()
     return article
+
+
+def get_user_articles(user_id: int, db: Session, skip: int = 0, limit: int = 100):
+    return db.query(models.Article).offset(skip).limit(limit).filter(models.Article.author_id == user_id)

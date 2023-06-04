@@ -8,8 +8,7 @@ from sqlalchemy.orm import Session
 
 
 from app.dependencies import get_db
-import app.crud as crud
-import app.schemas as schemas
+from app import crud, dependencies, schemas
 
 router = APIRouter()
 templates = Jinja2Templates(directory="templates")
@@ -29,10 +28,11 @@ async def get_article(request: Request, id: int, db: Session = Depends(get_db)):
     })
 
 
-@router.post("/acticles/", response_model=schemas.Article)
-async def create_article(article: schemas.ArticleCreate, db: Session = Depends(get_db)):
-    # get user by id
-    # CHECK IF ITS EXISTS
-    user_id = 1
+@router.post("/acticles/create", response_model=schemas.Article)
+async def create_article(
+        article: schemas.ArticleCreate,
+        db: Annotated[Session, Depends(get_db)],
+        user: Annotated[schemas.User, Depends(dependencies.get_current_user)]):
+    user_id = user.id
     db_article = crud.create_article(db, article, user_id)
     return db_article
