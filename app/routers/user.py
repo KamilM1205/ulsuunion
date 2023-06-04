@@ -1,9 +1,9 @@
 from typing import Annotated, List
 from sqlalchemy.orm import Session
-from fastapi import APIRouter, Depends, Request
+from fastapi import APIRouter, Depends
 
 
-from app import schemas, models, dependencies, crud
+from app import schemas,  dependencies, crud
 
 router = APIRouter()
 

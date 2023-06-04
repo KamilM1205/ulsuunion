@@ -4,8 +4,6 @@ from typing import List
 
 from sqlalchemy import (
     ForeignKey,
-    Column,
-    Table
 )
 from sqlalchemy.orm import (
     Mapped,

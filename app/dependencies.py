@@ -8,7 +8,7 @@ from passlib.context import CryptContext
 
 
 from .database import SessionLocal
-from . import crud, models, schemas
+from . import crud, schemas
 
 
 ##########
@@ -93,4 +93,3 @@ async def get_current_user(db: Annotated[Session, Depends(get_db)], token: Annot
     if user is None:
         raise credentials_exception
     return user
-

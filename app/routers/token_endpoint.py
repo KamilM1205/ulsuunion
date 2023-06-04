@@ -7,7 +7,7 @@ from sqlalchemy.orm import Session
 
 from datetime import timedelta
 
-from app import crud, schemas, models, dependencies
+from app import schemas, dependencies
 
 router = APIRouter()
 
