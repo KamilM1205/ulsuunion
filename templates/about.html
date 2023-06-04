@@ -1,7 +1,7 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 
 {% block title %}
-Главная
+О проекте
 {% endblock %}
 
 {% block head %}
@@ -18,16 +18,12 @@
 {% include 'login.html' %}
 {% include 'registration.html' %}
 
-{% for article in articles %}
 <article>
     <header>
-        <h4>{{article.title}}</h4>
-        <h5>Автор: {{article.author}}</h5>
+        <h2>О проекте</h2>
     </header>
-    {{article.description}}
-    <footer><a href="{{article.link}}">Посмотреть</a></footer>
+    Это проект - веб-сервис, где студенты могут искать людей в команды для своих проектов, путем создания объявлений.
 </article>
-{% endfor %}
 
 {% endblock %}
 

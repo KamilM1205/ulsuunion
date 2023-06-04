@@ -6,6 +6,8 @@ from fastapi.responses import HTMLResponse
 router = APIRouter()
 templates = Jinja2Templates(directory="templates")
 
-@router.get("/login", response_class=HTMLResponse)
-async def get_login_page(request: Request):
-    return templates.TemplateResponse("login.html", {"request": request})
+@router.get("/about", response_class=HTMLResponse)
+def get_about(request: Request):
+    return templates.TemplateResponse("about.html", {
+        "request": request,
+    })
