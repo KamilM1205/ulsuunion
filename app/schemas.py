@@ -10,6 +10,7 @@ import datetime as dt
 class ArticleBase(BaseModel):
     title: str
     description: str
+    content: str
 
 
 class ArticleGet(ArticleBase):
