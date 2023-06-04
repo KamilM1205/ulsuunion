@@ -29,6 +29,13 @@ async def get_article(request: Request, id: int, db: Session = Depends(get_db)):
     })
 
 
+@router.get("/edit_article", response_class=HTMLResponse)
+async def get_article_editor(request: Request):
+    return templates.TemplateResponse("article_editor.html", {
+        "request": request,
+    })
+
+
 @router.post("/acticles/", response_model=schemas.Article)
 async def create_article(article: schemas.ArticleCreate, db: Session = Depends(get_db)):
     # get user by id

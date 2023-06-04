@@ -14,6 +14,10 @@
 </head>
 
 <body>
+    <header class="fixed-header">
+        {% block header %}
+        {% endblock %}
+    </header>
     <main class="container">
         {% block page_content %}
         {% endblock %}
