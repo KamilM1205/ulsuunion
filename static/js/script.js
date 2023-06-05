@@ -4,7 +4,12 @@ const isOpenClass = "modal-is-open";
 const openingClass = "modal-is-opening";
 const closingClass = "modal-is-closing";
 const animationDuration = 400; // ms
+const originURL = "https://ulsuunet.itc-paws.space"
+
+
 var visibleModal = null;
+
+
 
 function toggleModal(event) {
     event.preventDefault();
@@ -45,6 +50,7 @@ function closeModal(modal) {
         modal.removeAttribute("open");
     }, animationDuration);
 }
+
 
 document.addEventListener("keydown", (event) => {
     if (event.key === "Escape" && visibleModal != null) {
@@ -170,7 +176,7 @@ $("#registration-btn").on("click", function () {
     console.log(data)
 
     $.ajax({
-        url: "http://localhost:8080/users/register",
+        url: originURL + "/users/register",
         type: "POST",
         contentType: "application/json; charset=utf-8",
         dataType: "json",
@@ -232,7 +238,7 @@ $.ajaxSetup({
 
 function validateToken(success_callback, error_callback) {
     $.ajax({
-        url: "http://localhost:8080/validate_token",
+        url: originURL + "/validate_token",
         type: "GET",
         contentType: "application/x-www-form-urlencoded",
         contentType: 'application/json',
@@ -299,7 +305,7 @@ $("#login-btn").on("click", function () {
     }
 
     $.ajax({
-        url: "http://localhost:8080/token",
+        url: originURL + "/token",
         type: "POST",
         contentType: "application/x-www-form-urlencoded",
         dataType: "json",
@@ -324,15 +330,13 @@ $("#login-btn").on("click", function () {
 // User -------
 
 function getUser() {
-    token = getToken();
-
-    if (!validateToken())
-        return null;
+    token = tokenHandler.tokenFromLocalStorage;
 
     let user = null;
 
+
     $.ajax({
-        url: "http://localhost:8080/users/me",
+        url: originURL + "/users/me",
         type: "GET",
         contentType: "application/x-www-form-urlencoded",
         dataType: "json",
