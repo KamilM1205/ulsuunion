@@ -229,18 +229,33 @@ $("#login-btn").on("click", function () {
 // ------------
 
 // Site utilities ---------
-
-$(".check-auth-true").each(function (i, e) {
-    $(e).attr("hidden", "true");
-});
+if (validateToken) {
+    $(".check-auth-false").each(function (i, e) {
+        $(e).attr("hidden", "true");
+    });
+    $(".check-auth-true").each(function (i, e) {
+        $(e).attr("hidden", "false");
+    });
+} else {
+    $(".check-auth-false").each(function (i, e) {
+        $(e).attr("hidden", "false");
+    });
+    $(".check-auth-true").each(function (i, e) {
+        $(e).attr("hidden", "true");
+    });
+}
 
 function logout() {
-
+    document.cookie = "token=\"\"";
 }
 
 // ---------
 
 // Token ------
+
+function validateToken() {
+    token = getToken();
+}
 
 function getToken() {
     let matches = document.cookie.match(new RegExp(
