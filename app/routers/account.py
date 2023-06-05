@@ -6,7 +6,7 @@ from fastapi.responses import HTMLResponse
 from sqlalchemy.orm import Session
 
 from datetime import date
-from app import crud, dependencies, schemas
+from app import dependencies, schemas
 
 router = APIRouter()
 templates = Jinja2Templates(directory="templates")
@@ -20,7 +20,7 @@ def age_calc(birthdate):
 
 
 @router.get("/account", response_class=HTMLResponse)
-def get_account(request: Request, user: Annotated[schemas.User, Depends(dependencies.get_db)], db: Annotated[Session, Depends(dependencies.get_db)]):
+def get_account(request: Request, user: Annotated[schemas.User, Depends(dependencies.get_current_user)], db: Annotated[Session, Depends(dependencies.get_db)]):
 
     articles = [schemas.Article.from_orm(article)
                 for article in user.owned_articles]
