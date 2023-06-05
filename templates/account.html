@@ -14,11 +14,7 @@
 {% include 'login.html' %}
 {% include 'registration.html' %}
 
-{% if not logged %}
-<article>
-    <h1>Не авторизован</h1>
-</article>
-{% else %}
+
 <article>
     <header>
         <h2>{{ username }}</h2>
@@ -35,11 +31,10 @@
         <h5>Автор: {{article.author}}</h5>
     </header>
     {{article.description}}
-    <footer><a href="{{article.link}}">Посмотреть</a></footer>
+    <footer><a href="/articles/{{article.id}}">Посмотреть</a></footer>
 </article>
 {% endfor %}
 
-{% endif %}
 {% endblock %}
 
 {% block scripts%}

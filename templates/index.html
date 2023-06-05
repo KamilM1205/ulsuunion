@@ -22,10 +22,10 @@
 <article>
     <header>
         <h4>{{article.title}}</h4>
-        <h5>Автор: {{article.author}}</h5>
+        <h5>Автор: {{article.author.name}}</h5>
     </header>
     {{article.description}}
-    <footer><a href="{{article.link}}">Посмотреть</a></footer>
+    <footer><a href="/articles/{{article.id}}">Посмотреть</a></footer>
 </article>
 {% endfor %}
 

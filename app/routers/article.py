@@ -15,7 +15,7 @@ templates = Jinja2Templates(directory="templates")
 
 
 @router.get("/articles/{id}", response_class=HTMLResponse)
-async def get_article(id: Annotated[int, Depends(Query)], db: Session = Depends(get_db)):
+async def get_article(request: Request, id: int, db: Session = Depends(get_db)):
     db_article = crud.get_article_by_id(db, id)
 
     if not db_article:
@@ -23,6 +23,7 @@ async def get_article(id: Annotated[int, Depends(Query)], db: Session = Depends(
     article = schemas.Article.from_orm(db_article)
 
     return templates.TemplateResponse("article.html", {
+        "request": request,
         **article.dict()
     })
 
