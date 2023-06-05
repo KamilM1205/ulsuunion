@@ -188,7 +188,7 @@ $("#registration-btn").on("click", function () {
 
 // Login--------
 
-$("#login-btn").on("click", function() {
+$("#login-btn").on("click", function () {
     let login = $("#login-login");
     let password = $("#password-login");
 
@@ -214,18 +214,18 @@ $("#login-btn").on("click", function() {
     $.ajax({
         url: "http://localhost:8080/token",
         type: "POST",
-        contentType: "application/json; charset=utf-8",
+        contentType: "application/x-www-form-urlencoded",
         dataType: "json",
 
-        data: JSON.stringify(data),
+        data: "&username=" + login.val() + "&password=" + password.val(),
 
-        success: function(msg) {
+        success: function (msg) {
             alert(JSON.stringify(msg));
             closeModal(visibleModal);
         },
 
-        error: function(err) {
-            alert(JSON.stringify(err));
+        error: function (err) {
+            console.log(err);
         },
     });
 });
