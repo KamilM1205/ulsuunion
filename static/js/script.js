@@ -136,8 +136,6 @@ $("#registration-btn").on("click", function () {
         surname.attr("aria-invalid", "false");
     }
 
-
-
     if (email.val().length == 0) {
         email.attr("aria-invalid", "true")
         return;
@@ -176,6 +174,7 @@ $("#registration-btn").on("click", function () {
         },
         success: function (msg) {
             alert(msg);
+            closeModal(visibleModal);
         },
 
         error: function (err) {
