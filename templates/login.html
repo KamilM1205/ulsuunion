@@ -5,14 +5,14 @@
             </a>
             <h1>Вход</h1>
         </header>
-        <input type="text" id="login" name="login" placeholder="Логин" required>
+        <input id="login-login" type="text" id="login" name="login" placeholder="Логин" required>
 
-        <input type="password" id="password" name="password" placeholder="Пароль" require>
+        <input id="password-login" type="password" id="password" name="password" placeholder="Пароль" require>
         <footer>
             <a href="#cancel" role="button" class="secondary" data-target="login-modal" onClick="toggleModal(event)">
                 Отмена
             </a>
-            <a href="#confirm" role="button" data-target="login-modal" onClick="toggleModal(event)">
+            <a id="login-btn" href="#confirm" role="button" data-target="login-modal" onClick="toggleModal(event)">
                 Войти
             </a>
         </footer>

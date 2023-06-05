@@ -174,3 +174,30 @@ $("#registration-btn").on("click", function() {
 });
 
 // -------------
+
+// Login--------
+
+$("#login-btn").on("click", function() {
+    let login = $("#login-login");
+    let password = $("#password-login");
+
+    if (login.val().length == 0) {
+        login.attr("aria-invalid", "true")
+        return;
+    } else {
+        login.attr("aria-invalid", "false");
+    }
+
+    if (password.val().length == 0) {
+        password.attr("aria-invalid", "true")
+        return;
+    } else {
+        password.attr("aria-invalid", "false");
+    }
+
+    $.ajax({
+        
+    });
+});
+
+// ------------
