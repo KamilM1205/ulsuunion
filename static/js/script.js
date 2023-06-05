@@ -45,29 +45,29 @@ function closeModal(modal) {
 
 document.addEventListener("keydown", (event) => {
     if (event.key === "Escape" && visibleModal != null) {
-      closeModal(visibleModal);
+        closeModal(visibleModal);
     }
-  });
+});
 
 function getScrollbarWidth() {
     // Creating invisible container
-  const outer = document.createElement("div");
-  outer.style.visibility = "hidden";
-  outer.style.overflow = "scroll"; // forcing scrollbar to appear
-  outer.style.msOverflowStyle = "scrollbar"; // needed for WinJS apps
-  document.body.appendChild(outer);
+    const outer = document.createElement("div");
+    outer.style.visibility = "hidden";
+    outer.style.overflow = "scroll"; // forcing scrollbar to appear
+    outer.style.msOverflowStyle = "scrollbar"; // needed for WinJS apps
+    document.body.appendChild(outer);
 
-  // Creating inner element and placing it in the container
-  const inner = document.createElement("div");
-  outer.appendChild(inner);
+    // Creating inner element and placing it in the container
+    const inner = document.createElement("div");
+    outer.appendChild(inner);
 
-  // Calculating difference between container's full width and the child width
-  const scrollbarWidth = outer.offsetWidth - inner.offsetWidth;
+    // Calculating difference between container's full width and the child width
+    const scrollbarWidth = outer.offsetWidth - inner.offsetWidth;
 
-  // Removing temporary elements from the DOM
-  outer.parentNode.removeChild(outer);
+    // Removing temporary elements from the DOM
+    outer.parentNode.removeChild(outer);
 
-  return scrollbarWidth;
+    return scrollbarWidth;
 }
 
 function isScrollbarVisible() {
@@ -94,16 +94,16 @@ function showSidenav() {
     isSidenavOpen = true;
 }
 
-$(".shadower").on("click", function(event) {
+$(".shadower").on("click", function (event) {
     event.preventDefault();
     hideSidenav();
 });
 
-$(".shadower").on("scroll", function(event) {
+$(".shadower").on("scroll", function (event) {
     event.preventDefault();
 });
 
-$("#sidenav-btn").on("click", function() {
+$("#sidenav-btn").on("click", function () {
     if (!isSidenavOpen) {
         showSidenav();
     } else {
@@ -115,7 +115,7 @@ $("#sidenav-btn").on("click", function() {
 
 // Registration ------
 
-$("#registration-btn").on("click", function() {
+$("#registration-btn").on("click", function () {
     let name = $("#reg-name");
     let surname = $("#reg-surname");
     let birthday = $("#reg-birthday");
@@ -136,12 +136,7 @@ $("#registration-btn").on("click", function() {
         surname.attr("aria-invalid", "false");
     }
 
-    if (!birthday.val()) {
-        birthday.attr("aria-invalid", "true")
-        return;
-    } else {
-        birthday.attr("aria-invalid", "false");
-    }
+
 
     if (email.val().length == 0) {
         email.attr("aria-invalid", "true")
@@ -157,6 +152,16 @@ $("#registration-btn").on("click", function() {
         password.attr("aria-invalid", "false");
     }
 
+    data = {
+        "name": name.val(),
+        "surname": surname.val(),
+        "email": email.val(),
+        "username": email.val(),
+        "born_at": birthday.val(),
+        "password": password.val(),
+    }
+    console.log(data)
+
     $.ajax({
         url: "http://localhost:8080/users/register",
         type: "POST",
@@ -169,11 +174,11 @@ $("#registration-btn").on("click", function() {
             "born_at": birthday.val(),
             "password": password.val(),
         },
-        success: function(msg) {
+        success: function (msg) {
             alert(msg);
         },
 
-        error: function(err) {
+        error: function (err) {
             alert(err);
         },
     });
