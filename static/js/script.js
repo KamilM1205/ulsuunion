@@ -215,8 +215,9 @@ $("#login-btn").on("click", function () {
         data: "&username=" + login.val() + "&password=" + password.val(),
 
         success: function (msg) {
-            document.cookie = "token=" + msg.token;
-            alert(JSON.stringify(msg));
+            document.cookie = "token=" + encodeURIComponent(msg.access_token);
+            console.log(JSON.stringify(msg));
+            //location.reload();
             closeModal(visibleModal);
         },
 
@@ -228,53 +229,33 @@ $("#login-btn").on("click", function () {
 
 // ------------
 
-// Site utilities ---------
-if (validateToken) {
-    $(".check-auth-false").each(function (i, e) {
-        $(e).attr("hidden", "true");
-    });
-    $(".check-auth-true").each(function (i, e) {
-        $(e).attr("hidden", "false");
-    });
-} else {
-    $(".check-auth-false").each(function (i, e) {
-        $(e).attr("hidden", "false");
-    });
-    $(".check-auth-true").each(function (i, e) {
-        $(e).attr("hidden", "true");
-    });
-}
-
-function logout() {
-    document.cookie = "token=\"\"";
-}
-
-// ---------
-
 // Token ------
 
-function validateToken() {
+async function validateToken() {
     token = getToken();
+    ret_value = false;
 
-    if (token == "" || token == "undefined")
+    if (token.length == 0 || token == "undefined")
         return false;
 
-    $.ajax({
+    await $.ajax({
         url: "http://localhost:8080/validate_token",
         type: "GET",
         contentType: "application/x-www-form-urlencoded",
         dataType: "json",
-        data: token,
 
         success: function() {
-            return true;
+            ret_value = true;
         },
 
-        error: function() {
+        error: function(err) {
+            console.log(err);
             logout();
-            return false;
+            ret_value = false;
         }
     });
+
+    return ret_value;
 }
 
 function getToken() {
@@ -286,7 +267,35 @@ function getToken() {
 
 $.ajaxSetup({
     beforeSend: function (xhr) {
-        if (getToken() != "" && getToken() != "undefined")
+        if (getToken().length != 0 || getToken() != "undefined")
             xhr.setRequestHeader("Authorization", "Bearer " + getToken());
     }
 });
+
+// -----------
+
+// Site utilities ---------
+
+let isTokenValid = await validateToken();
+
+if (isTokenValid) {
+    $(".check-auth-false").each(function (i, e) {
+        $(e).attr("hidden", "true");
+    });
+    $(".check-auth-true").each(function (i, e) {
+        $(e).removeAttr("hidden");
+    });
+} else {
+    $(".check-auth-false").each(function (i, e) {
+        $(e).removeAttr("hidden");
+    });
+    $(".check-auth-true").each(function (i, e) {
+        $(e).attr("hidden", "true");
+    });
+}
+
+function logout() {
+    document.cookie = "token=" + encodeURIComponent("");
+}
+
+// ---------
