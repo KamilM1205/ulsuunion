@@ -35,7 +35,7 @@ async def login_for_access_token(
     return {"access_token": access_token, "token_type": "bearer"}
 
 
-@router.get("/registered")
+@router.get("/validate_token")
 async def check_for_registration(
     user: Annotated[schemas.User, dependencies.get_current_user]
 ):
