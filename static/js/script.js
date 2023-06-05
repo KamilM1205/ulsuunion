@@ -244,11 +244,11 @@ async function validateToken() {
         contentType: "application/x-www-form-urlencoded",
         dataType: "json",
 
-        success: function() {
+        success: function () {
             ret_value = true;
         },
 
-        error: function(err) {
+        error: function (err) {
             console.log(err);
             logout();
             ret_value = false;
@@ -276,7 +276,7 @@ $.ajaxSetup({
 
 // Site utilities ---------
 
-let isTokenValid = await validateToken();
+let isTokenValid = validateToken();
 
 if (isTokenValid) {
     $(".check-auth-false").each(function (i, e) {
@@ -299,3 +299,33 @@ function logout() {
 }
 
 // ---------
+
+// User -------
+
+function getUser() {
+    token = getToken();
+
+    if (!validateToken())
+        return null;
+
+    let user = null;
+
+    $.ajax({
+        url: "http://localhost:8080/users/me",
+        type: "GET",
+        contentType: "application/x-www-form-urlencoded",
+        dataType: "json",
+
+        success: function (result) {
+            user = JSON.parse(result);
+        },
+
+        error: function (err) {
+            console.log(err);
+        }
+    });
+
+    return user;
+}
+
+// -----------
