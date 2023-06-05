@@ -115,6 +115,12 @@ $("#sidenav-btn").on("click", function () {
 
 // Registration ------
 
+function to_normal_date(date) {
+    var input = date;
+    var dateEntered = new Date(input);
+    return String(dateEntered.getFullYear()) + "-" + String(dateEntered.getMonth()) + "-" + String(dateEntered.getDay())
+}
+
 $("#registration-btn").on("click", function () {
     let name = $("#reg-name");
     let surname = $("#reg-surname");
@@ -155,7 +161,7 @@ $("#registration-btn").on("click", function () {
         "surname": surname.val(),
         "email": email.val(),
         "username": email.val(),
-        "born_at": birthday.val(),
+        "born_at": to_normal_date(birthday.val()),
         "password": password.val(),
     }
     console.log(data)
@@ -163,15 +169,10 @@ $("#registration-btn").on("click", function () {
     $.ajax({
         url: "http://localhost:8080/users/register",
         type: "POST",
-        contentType: "application/json",
-        data: {
-            "name": name.val(),
-            "surname": surname.val(),
-            "email": email.val(),
-            "username": email.val(),
-            "born_at": birthday.val(),
-            "password": password.val(),
-        },
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+
+        data: JSON.stringify(data),
         success: function (msg) {
             alert(msg);
             closeModal(visibleModal);
