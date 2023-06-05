@@ -37,6 +37,9 @@ function closeModal(modal) {
     visibleModal = null;
     document.documentElement.classList.add(closingClass);
     setTimeout(() => {
+        if (modal == null) {
+            return
+        }
         document.documentElement.classList.remove(closingClass, isOpenClass);
         document.documentElement.style.removeProperty("--scrollbar-width");
         modal.removeAttribute("open");
@@ -186,6 +189,111 @@ $("#registration-btn").on("click", function () {
 
 // -------------
 
+
+// Token ------
+
+
+const tokenHandler = {
+    _token: "",
+    localStorageKey: "token",
+
+    init() {
+        this.token = this.tokenFromLocalStorage;
+    },
+    get tokenFromLocalStorage() {
+        if (typeof window.localStorage !== "undefined") {
+            if (window.localStorage.getItem(this.localStorageKey) !== null) {
+                return window.localStorage.getItem(this.localStorageKey);
+            }
+        }
+        return this._token;
+    },
+    set token(token) {
+        this._token = token;
+        this.tokenToLocalStrorage();
+    },
+    tokenToLocalStrorage() {
+        if (typeof window.localStorage !== "undefined") {
+            window.localStorage.setItem(this.localStorageKey, this._token);
+        }
+    }
+}
+
+tokenHandler.init();
+
+async function validateToken() {
+    token = tokenHandler.tokenFromLocalStorage;
+    ret_value = false;
+    if (token.length == 0 || token == "undefined")
+        return false;
+
+    await $.ajax({
+        url: "http://localhost:8080/validate_token",
+        type: "GET",
+        contentType: "application/x-www-form-urlencoded",
+        dataType: "json",
+
+        success: function () {
+            return;
+        },
+
+        error: function (err) {
+            console.log(err);
+            logout();
+            throw new Error;
+        }
+    });
+
+}
+
+function getToken() {
+    let matches = tokenHandler.tokenFromLocalStorage.match(new RegExp(
+        "(?:^|; )" + "token".replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+    ));
+    return tokenHandler.tokenFromLocalStorage
+}
+
+$.ajaxSetup({
+    beforeSend: function (xhr) {
+        if (getToken().length != 0 || getToken() != "undefined")
+            xhr.setRequestHeader("Authorization", "Bearer " + getToken());
+    }
+});
+
+// -----------
+
+// Site utilities ---------
+
+
+let updateLinks = async () => {
+    let isTokenValid = true;
+    validateToken().catch(isTokenValid = false);
+
+    if (isTokenValid === true) {
+        $(".check-auth-false").each((i, e) => {
+            $(e).attr("hidden", "true");
+        });
+        $(".check-auth-true").each((i, e) => {
+            $(e).removeAttr("hidden");
+        });
+    } else {
+        $(".check-auth-false").each((i, e) => {
+            $(e).removeAttr("hidden");
+        });
+        $(".check-auth-true").each((i, e) => {
+            $(e).attr("hidden", "true");
+        });
+    }
+}
+
+updateLinks();
+
+function logout() {
+    tokenHandler.token = "";
+    updateLinks();
+}
+
+// ---------
 // Login--------
 
 $("#login-btn").on("click", function () {
@@ -215,7 +323,7 @@ $("#login-btn").on("click", function () {
         data: "&username=" + login.val() + "&password=" + password.val(),
 
         success: function (msg) {
-            document.cookie = "token=" + encodeURIComponent(msg.access_token);
+            tokenHandler.token = encodeURIComponent(msg.access_token);
             console.log(JSON.stringify(msg));
             //location.reload();
             closeModal(visibleModal);
@@ -228,74 +336,3 @@ $("#login-btn").on("click", function () {
 });
 
 // ------------
-
-// Token ------
-
-async function validateToken() {
-    token = getToken();
-    ret_value = false;
-
-    if (token.length == 0 || token == "undefined")
-        return false;
-
-    await $.ajax({
-        url: "http://localhost:8080/validate_token",
-        type: "GET",
-        contentType: "application/x-www-form-urlencoded",
-        dataType: "json",
-
-        success: function() {
-            ret_value = true;
-        },
-
-        error: function(err) {
-            console.log(err);
-            logout();
-            ret_value = false;
-        }
-    });
-
-    return ret_value;
-}
-
-function getToken() {
-    let matches = document.cookie.match(new RegExp(
-        "(?:^|; )" + "token".replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
-    ));
-    return matches ? decodeURIComponent(matches[1]) : undefined;
-}
-
-$.ajaxSetup({
-    beforeSend: function (xhr) {
-        if (getToken().length != 0 || getToken() != "undefined")
-            xhr.setRequestHeader("Authorization", "Bearer " + getToken());
-    }
-});
-
-// -----------
-
-// Site utilities ---------
-
-let isTokenValid = await validateToken();
-
-if (isTokenValid) {
-    $(".check-auth-false").each(function (i, e) {
-        $(e).attr("hidden", "true");
-    });
-    $(".check-auth-true").each(function (i, e) {
-        $(e).removeAttr("hidden");
-    });
-} else {
-    $(".check-auth-false").each(function (i, e) {
-        $(e).removeAttr("hidden");
-    });
-    $(".check-auth-true").each(function (i, e) {
-        $(e).attr("hidden", "true");
-    });
-}
-
-function logout() {
-    document.cookie = "token=" + encodeURIComponent("");
-}
-
-// ---------
