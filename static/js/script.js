@@ -206,11 +206,6 @@ $("#login-btn").on("click", function () {
         password.attr("aria-invalid", "false");
     }
 
-    data = {
-        "login": login.val(),
-        "password": password.val(),
-    };
-
     $.ajax({
         url: "http://localhost:8080/token",
         type: "POST",
@@ -220,6 +215,7 @@ $("#login-btn").on("click", function () {
         data: "&username=" + login.val() + "&password=" + password.val(),
 
         success: function (msg) {
+            document.cookie = "token=" + msg.token;
             alert(JSON.stringify(msg));
             closeModal(visibleModal);
         },
@@ -231,3 +227,31 @@ $("#login-btn").on("click", function () {
 });
 
 // ------------
+
+// Site utilities ---------
+
+$(".check-auth-true").each(function (i, e) {
+    $(e).attr("hidden", "true");
+});
+
+function logout() {
+
+}
+
+// ---------
+
+// Token ------
+
+function getToken() {
+    let matches = document.cookie.match(new RegExp(
+        "(?:^|; )" + "token".replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+    ));
+    return matches ? decodeURIComponent(matches[1]) : undefined;
+}
+
+$.ajaxSetup({
+    beforeSend: function (xhr) {
+        if (getToken() != "" && getToken() != "undefined")
+            xhr.setRequestHeader("Authorization", "Bearer " + getToken());
+    }
+});
