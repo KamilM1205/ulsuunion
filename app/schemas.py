@@ -14,7 +14,7 @@ class ArticleBase(BaseModel):
 
 
 class ArticleGet(ArticleBase):
-    author: 'UserBase'
+    author: 'UserHomepage'
 
 
 class ArticleCreate(ArticleBase):
@@ -27,7 +27,7 @@ class ArticleUpdate(ArticleCreate):
 
 class Article(ArticleBase):
     id: int
-    author_id: int
+    author: "UserHomepage"
 
     class Config:
         orm_mode = True
@@ -61,6 +61,13 @@ class User(UserBase):
         orm_mode = True
 
 
+class UserHomepage(UserBase):
+    id: int
+
+    class Config:
+        orm_mode = True
+
+
 class UserInDB(User):
     hashed_password: str
 
@@ -72,3 +79,6 @@ class Token(BaseModel):
 
 class TokenData(BaseModel):
     username: Optional[str] = None
+
+
+Article.update_forward_refs()
