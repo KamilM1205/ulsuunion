@@ -14,29 +14,45 @@
 {% include 'login.html' %}
 {% include 'registration.html' %}
 
+<article class="check-auth-false">
 
-<article>
+</article>
+
+<article class="check-auth-true">
     <header>
-        <h2>{{ name }} {{ surname }}</h2>
+        <h2 id="account-name"></h2>
     </header>
-    <h3>Возраст: {{ age }}</h3>
-    <h3>Почта: {{ email }}</h3>
+    <h3 id="account-age"></h3>
+    <h3 id="account-email"></h3>
 </article>
 <h1>Статьи</h1>
 
-{% for article in articles %}
-<article>
-    <header>
-        <h4>{{article.title}}</h4>
-        <h5>Автор: {{article.author}}</h5>
-    </header>
-    {{article.description}}
-    <footer><a href="/articles/{{article.id}}">Посмотреть</a></footer>
-</article>
-{% endfor %}
-
 {% endblock %}
 
-{% block scripts%}
+{% block scripts %}
 {{ super() }}
+
+<script>
+    let user = getUser();
+
+    $("#account-name").text(`${user["name"]} ${user["surname"]}`);
+    $("#account-age").text(`${Date.now() - user["bornAt"]}`);
+    $("#account-email").text(`${user["email"]}`);
+
+    for (const article in user["articles"]) {
+        if (Object.hasOwnProperty.call(user["articles"], article)) {
+            const element = user["articles"][article];
+            let content = `
+            <article>
+                <header>
+                    <h4>${element.title}</h4>
+                    <h5>Автор: ${element.author}</h5>
+                </header>
+                    ${element.description}
+                <footer><a href="/articles/${element.id}">Посмотреть</a></footer>
+            </article>`
+        }
+    }
+</script>
+
 {% endblock %}

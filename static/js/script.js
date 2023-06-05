@@ -320,3 +320,104 @@ $("#login-btn").on("click", function () {
 });
 
 // ------------
+
+// Token ------
+
+async function validateToken() {
+    token = getToken();
+    ret_value = false;
+
+    if (token.length == 0 || token == "undefined")
+        return false;
+
+    await $.ajax({
+        url: "http://localhost:8080/validate_token",
+        type: "GET",
+        contentType: "application/x-www-form-urlencoded",
+        dataType: "json",
+
+        success: function () {
+            ret_value = true;
+        },
+
+        error: function (err) {
+            console.log(err);
+            logout();
+            ret_value = false;
+        }
+    });
+
+    return ret_value;
+}
+
+function getToken() {
+    let matches = document.cookie.match(new RegExp(
+        "(?:^|; )" + "token".replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+    ));
+    return matches ? decodeURIComponent(matches[1]) : undefined;
+}
+
+$.ajaxSetup({
+    beforeSend: function (xhr) {
+        if (getToken().length != 0 || getToken() != "undefined")
+            xhr.setRequestHeader("Authorization", "Bearer " + getToken());
+    }
+});
+
+// -----------
+
+// Site utilities ---------
+
+let isTokenValid = validateToken();
+
+if (isTokenValid) {
+    $(".check-auth-false").each(function (i, e) {
+        $(e).attr("hidden", "true");
+    });
+    $(".check-auth-true").each(function (i, e) {
+        $(e).removeAttr("hidden");
+    });
+} else {
+    $(".check-auth-false").each(function (i, e) {
+        $(e).removeAttr("hidden");
+    });
+    $(".check-auth-true").each(function (i, e) {
+        $(e).attr("hidden", "true");
+    });
+}
+
+function logout() {
+    document.cookie = "token=" + encodeURIComponent("");
+}
+
+// ---------
+
+// User -------
+
+function getUser() {
+    token = getToken();
+
+    if (!validateToken())
+        return null;
+
+    let user = null;
+
+    $.ajax({
+        url: "http://localhost:8080/users/me",
+        type: "GET",
+        contentType: "application/x-www-form-urlencoded",
+        dataType: "json",
+
+        success: function (result) {
+            user = JSON.parse(result);
+        },
+
+        error: function (err) {
+            console.log(err);
+        }
+    });
+
+    return user;
+}
+
+// -----------
