@@ -162,9 +162,12 @@ $("#registration-btn").on("click", function() {
         type: "POST",
         contentType: "application/json",
         data: {
-            "name": name,
-            "surname": surname,
-            "email": 
+            "name": name.val(),
+            "surname": surname.val(),
+            "email": email.val(),
+            "username": email.val(),
+            "born_at": birthday.val(),
+            "password": password.val(),
         },
         success: function(msg) {
             alert(msg);
