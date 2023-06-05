@@ -1,19 +1,21 @@
 <nav>
     <ul>
-        <li><h2>ULSU.Union</h2></li>
+        <li>
+            <h2>ULSU.Union</h2>
+        </li>
     </ul>
     <ul id="default-nav">
         <li><a href="/">Домой</a></li>
         <li><a href="/account">Аккаунт</a></li>
         <li><a href="/about">О проекте</a></li>
-        {% if not logged %}
-        (
+        <div class="check-auth-true">
+            (
             <ul id="nav-loggin">
                 <li><a data-target="registration-modal" onclick="toggleModal(event)">Регистрация</a></li>
                 <li><a data-target="login-modal" onclick="toggleModal(event)">Вход</a></li>
             </ul>
-        )
-        {% endif %}
+            )
+        </div>
     </ul>
     <ul id="mobile-nav">
         <img id="sidenav-btn" src="{{ url_for('static', path='images/menu-icon.svg') }}">
