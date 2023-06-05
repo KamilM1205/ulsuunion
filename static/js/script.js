@@ -255,6 +255,26 @@ function logout() {
 
 function validateToken() {
     token = getToken();
+
+    if (token == "" || token == "undefined")
+        return false;
+
+    $.ajax({
+        url: "http://localhost:8080/validate_token",
+        type: "GET",
+        contentType: "application/x-www-form-urlencoded",
+        dataType: "json",
+        data: token,
+
+        success: function() {
+            return true;
+        },
+
+        error: function() {
+            logout();
+            return false;
+        }
+    });
 }
 
 function getToken() {
