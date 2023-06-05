@@ -174,7 +174,7 @@ $("#registration-btn").on("click", function () {
 
         data: JSON.stringify(data),
         success: function (msg) {
-            alert(msg);
+            alert(JSON.stringify(msg));
             closeModal(visibleModal);
         },
 
@@ -206,8 +206,27 @@ $("#login-btn").on("click", function() {
         password.attr("aria-invalid", "false");
     }
 
+    data = {
+        "login": login.val(),
+        "password": password.val(),
+    };
+
     $.ajax({
-        
+        url: "http://localhost:8080/token",
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+
+        data: JSON.stringify(data),
+
+        success: function(msg) {
+            alert(JSON.stringify(msg));
+            closeModal(visibleModal);
+        },
+
+        error: function(err) {
+            alert(JSON.stringify(err));
+        },
     });
 });
 
