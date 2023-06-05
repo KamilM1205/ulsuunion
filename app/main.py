@@ -1,4 +1,4 @@
-from app.routers import article, user, token_endpoint
+from app.routers import article, homepage, user, token_endpoint
 from app.routers import about, article, account
 
 from fastapi import FastAPI
@@ -23,3 +23,4 @@ app.include_router(token_endpoint.router)
 app.include_router(user.router)
 app.include_router(account.router)
 app.include_router(about.router)
+app.include_router(homepage.router)

@@ -1,6 +1,6 @@
 from typing import Annotated, List
 from sqlalchemy.orm import Session
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, status, HTTPException
 
 
 from app import schemas,  dependencies, crud
@@ -15,10 +15,16 @@ async def create_user(
 ):
     user_in_db = crud.get_user_by_username(db, user.username)
     if user_in_db:
-        raise
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="Username already exists"
+        )
     user_in_db = crud.get_user_by_email(db, user.email)
     if user_in_db:
-        raise
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="Email already exists"
+        )
     new_user = crud.create_user(db, user)
     return new_user
 

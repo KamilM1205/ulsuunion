@@ -1,5 +1,5 @@
 from typing import Annotated
-from fastapi import Request, Depends
+from fastapi import Request, Depends, Query
 from fastapi.routing import APIRouter
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse
@@ -15,7 +15,7 @@ templates = Jinja2Templates(directory="templates")
 
 
 @router.get("/articles/{id}", response_class=HTMLResponse)
-async def get_article(request: Request, id: int, db: Session = Depends(get_db)):
+async def get_article(id: Annotated[int, Depends(Query)], db: Session = Depends(get_db)):
     db_article = crud.get_article_by_id(db, id)
 
     if not db_article:
@@ -23,12 +23,11 @@ async def get_article(request: Request, id: int, db: Session = Depends(get_db)):
     article = schemas.Article.from_orm(db_article)
 
     return templates.TemplateResponse("article.html", {
-        "request": request,
         **article.dict()
     })
 
 
-@router.post("/acticles/create", response_model=schemas.Article)
+@router.post("/acticles/", response_model=schemas.Article)
 async def create_article(
         article: schemas.ArticleCreate,
         db: Annotated[Session, Depends(get_db)],
