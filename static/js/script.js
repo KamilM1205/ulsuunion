@@ -112,3 +112,68 @@ $("#sidenav-btn").on("click", function() {
 });
 
 // -------------
+
+// Registration ------
+
+$("#registration-btn").on("click", function() {
+    let name = $("#reg-name");
+    let surname = $("#reg-surname");
+    let birthday = $("#reg-birthday");
+    let email = $("#reg-email");
+    let password = $("#reg-password");
+
+    if (name.val().length == 0) {
+        name.attr("aria-invalid", "true")
+        return;
+    } else {
+        name.attr("aria-invalid", "false");
+    }
+
+    if (surname.val().length == 0) {
+        surname.attr("aria-invalid", "true")
+        return;
+    } else {
+        surname.attr("aria-invalid", "false");
+    }
+
+    if (!birthday.val()) {
+        birthday.attr("aria-invalid", "true")
+        return;
+    } else {
+        birthday.attr("aria-invalid", "false");
+    }
+
+    if (email.val().length == 0) {
+        email.attr("aria-invalid", "true")
+        return;
+    } else {
+        email.attr("aria-invalid", "false");
+    }
+
+    if (password.val().length < 6) {
+        password.attr("aria-invalid", "true")
+        return;
+    } else {
+        password.attr("aria-invalid", "false");
+    }
+
+    $.ajax({
+        url: "http://localhost:8080/users/register",
+        type: "POST",
+        contentType: "application/json",
+        data: {
+            "name": name,
+            "surname": surname,
+            "email": 
+        },
+        success: function(msg) {
+            alert(msg);
+        },
+
+        error: function(err) {
+            alert(err);
+        },
+    });
+});
+
+// -------------

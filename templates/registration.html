@@ -6,17 +6,17 @@
             <h1>Регистрация</h1>
         </header>
 
-        <input type="text" id="name" name="name" placeholder="Имя" required>
-        <input type="text" id="surname" name="surname" placeholder="Фамилия" required>
-        <input type="date" id="birtday" name="birthday">
-        <input type="email" id="email" name="email" placeholder="Почта" required>
-        <input type="password" id="password" name="password" placeholder="Пароль" require>
+        <input type="text" id="reg-name" name="reg-name" placeholder="Имя" required>
+        <input type="text" id="reg-surname" name="reg-surname" placeholder="Фамилия" required>
+        <input type="date" id="reg-birtday" name="reg-birthday">
+        <input type="email" id="reg-email" name="reg-email" placeholder="Почта" required>
+        <input type="password" id="reg-password" name="reg-password" placeholder="Пароль(не менее 6 символов)" require>
 
         <footer>
             <a href="#cancel" role="button" class="secondary" data-target="registration-modal" onClick="toggleModal(event)">
                 Отмена
             </a>
-            <a href="#confirm" role="button" data-target="registration-modal" onClick="toggleModal(event)">
+            <a href="#confirm" id="registration-btn" role="button" data-target="registration-modal" >
                 Зарегистрироваться
             </a>
         </footer>
