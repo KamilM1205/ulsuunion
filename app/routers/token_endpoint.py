@@ -33,3 +33,10 @@ async def login_for_access_token(
         expires_delta=access_token_expires
     )
     return {"access_token": access_token, "token_type": "bearer"}
+
+
+@router.get("/registered")
+async def check_for_registration(
+    user: Annotated[schemas.User, dependencies.get_current_user]
+):
+    return {"success": True}
