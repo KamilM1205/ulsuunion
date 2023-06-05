@@ -221,76 +221,60 @@ const tokenHandler = {
 
 tokenHandler.init();
 
-async function validateToken() {
-    token = tokenHandler.tokenFromLocalStorage;
-    ret_value = false;
-    if (token.length == 0 || token == "undefined")
-        return false;
+$.ajaxSetup({
+    beforeSend: function (xhr) {
+        token = tokenHandler.tokenFromLocalStorage;
+        if (token.length != 0 && typeof token != "undefined")
+            xhr.setRequestHeader("Authorization", "Bearer " + token);
+    }
+});
 
-    await $.ajax({
+
+function validateToken(success_callback, error_callback) {
+    $.ajax({
         url: "http://localhost:8080/validate_token",
         type: "GET",
         contentType: "application/x-www-form-urlencoded",
-        dataType: "json",
-
-        success: function () {
-            return;
+        contentType: 'application/json',
+        success: () => {
+            success_callback()
         },
 
-        error: function (err) {
-            console.log(err);
-            logout();
-            throw new Error;
+        error: () => {
+            error_callback()
         }
     });
 
 }
 
-function getToken() {
-    let matches = tokenHandler.tokenFromLocalStorage.match(new RegExp(
-        "(?:^|; )" + "token".replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
-    ));
-    return tokenHandler.tokenFromLocalStorage
-}
-
-$.ajaxSetup({
-    beforeSend: function (xhr) {
-        if (getToken().length != 0 || getToken() != "undefined")
-            xhr.setRequestHeader("Authorization", "Bearer " + getToken());
-    }
-});
 
 // -----------
 
 // Site utilities ---------
 
-
-let updateLinks = async () => {
-    let isTokenValid = true;
-    validateToken().catch(isTokenValid = false);
-
-    if (isTokenValid === true) {
-        $(".check-auth-false").each((i, e) => {
-            $(e).attr("hidden", "true");
-        });
-        $(".check-auth-true").each((i, e) => {
-            $(e).removeAttr("hidden");
-        });
-    } else {
-        $(".check-auth-false").each((i, e) => {
-            $(e).removeAttr("hidden");
-        });
-        $(".check-auth-true").each((i, e) => {
-            $(e).attr("hidden", "true");
-        });
-    }
+let if_token_valid = () => {
+    $(".check-auth-false").each((i, e) => {
+        $(e).attr("hidden", "true");
+    });
+    $(".check-auth-true").each((i, e) => {
+        $(e).removeAttr("hidden");
+    });
 }
 
-updateLinks();
+let if_token_invalid = () => {
+    $(".check-auth-false").each((i, e) => {
+        $(e).removeAttr("hidden");
+    });
+    $(".check-auth-true").each((i, e) => {
+        $(e).attr("hidden", "true");
+    });
+}
+
+validateToken(if_token_valid, if_token_invalid);
 
 function logout() {
     tokenHandler.token = "";
-    updateLinks();
+    validateToken(if_token_valid, if_token_invalid);
 }
 
 // ---------
@@ -325,7 +309,7 @@ $("#login-btn").on("click", function () {
         success: function (msg) {
             tokenHandler.token = encodeURIComponent(msg.access_token);
             console.log(JSON.stringify(msg));
-            //location.reload();
+            validateToken(if_token_valid, if_token_invalid);
             closeModal(visibleModal);
         },
 
