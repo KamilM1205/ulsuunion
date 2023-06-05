@@ -37,7 +37,7 @@ async def users_read_me(
     return current_user
 
 
-@router.get("/users/me/items", response_model=List[schemas.Article])
+@router.get("/users/me/articles", response_model=List[schemas.Article])
 async def users_own_items(
     current_user: Annotated[schemas.User,
                             Depends(dependencies.get_current_user)],

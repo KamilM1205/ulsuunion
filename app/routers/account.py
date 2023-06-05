@@ -20,12 +20,10 @@ def age_calc(birthdate):
 
 
 @router.get("/account", response_class=HTMLResponse)
-def get_account(request: Request, db: Annotated[Session, Depends(dependencies.get_db)]):
+def get_account(request: Request, user: Annotated[schemas.User, Depends(dependencies.get_db)], db: Annotated[Session, Depends(dependencies.get_db)]):
 
-    user = schemas.User.from_orm(crud.get_user_by_id(db, 2))
     articles = [schemas.Article.from_orm(article)
                 for article in user.owned_articles]
-    print(articles)
     age = age_calc(user.born_at)
     return templates.TemplateResponse("account.html", {
         "request": request,
