@@ -324,7 +324,7 @@ $("#login-btn").on("click", function () {
 // User -------
 
 function getUser() {
-    token = getToken();
+    token = tokenHandler.tokenFromLocalStorage;
 
     if (!validateToken())
         return null;
