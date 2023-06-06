@@ -17,15 +17,16 @@
 
 {% include 'login.html' %}
 {% include 'registration.html' %}
+<article>
+    <h2>{{title}}</h2>
 
-<h2>{{title}}</h2>
+    {{content}}
 
-{{content}}
-
-<footer>
-    Автор: {{author}} Почта: {{email}} Телефон: {{phone}}
-</footer>
-
+    <footer>
+        <h1>Автор: {{author.name}} {{author.surname}}</h1>
+        <h1>Почта: {{author.email}} </h1>
+    </footer>
+</article>
 {% endblock %}
 
 {% block scripts %}

@@ -4,6 +4,7 @@ const isOpenClass = "modal-is-open";
 const openingClass = "modal-is-opening";
 const closingClass = "modal-is-closing";
 const animationDuration = 400; // ms
+//const originURL = "localhost:8080"
 const originURL = "https://ulsuunet.itc-paws.space"
 
 
@@ -329,7 +330,7 @@ $("#login-btn").on("click", function () {
 
 // User -------
 
-function getUser() {
+function getUser(success_callback) {
     token = tokenHandler.tokenFromLocalStorage;
 
     let user = null;
@@ -342,7 +343,8 @@ function getUser() {
         dataType: "json",
 
         success: function (result) {
-            user = JSON.parse(result);
+            success_callback(result)
+            user = result
         },
 
         error: function (err) {
